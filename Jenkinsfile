@@ -99,30 +99,30 @@ pipeline {
                 }
             }
         }
-        stage ('JMeter LoadTest') {
-            steps { 
-                sh '~/lab/sw/jmeter/bin/jmeter.sh -j jmeter.save.saveservice.output_format=xml -n -t src/main/jmx/guestbook_loadtest.jmx -l loadtest_result.jtl' 
-                perfReport filterRegex: '', showTrendGraphs: true, sourceDataFiles: 'loadtest_result.jtl' 
-            } 
-        }
+        // stage ('JMeter LoadTest') {
+        //     steps { 
+        //         sh '~/lab/sw/jmeter/bin/jmeter.sh -j jmeter.save.saveservice.output_format=xml -n -t src/main/jmx/guestbook_loadtest.jmx -l loadtest_result.jtl' 
+        //         perfReport filterRegex: '', showTrendGraphs: true, sourceDataFiles: 'loadtest_result.jtl' 
+        //     } 
+        // }
     }
     post { 
-        always { 
-            emailext (attachLog: true, body: '본문', compressLog: true
-                    , recipientProviders: [buildUser()], subject: '제목', to: 'yu3papa.j@gmail.com')
+        // always { 
+        //     emailext (attachLog: true, body: '본문', compressLog: true
+        //             , recipientProviders: [buildUser()], subject: '제목', to: 'yu3papa.j@gmail.com')
 
-        }
+        // }
         success { 
             slackSend(tokenCredentialId: 'slack-token'
                 , channel: '#교육'
                 , color: 'good'
-                , message: "${JOB_NAME} (${BUILD_NUMBER}) 빌드가 성공적으로 끝났습니다. Details: (<${BUILD_URL} | here >)")
+                , message: "${JOB_NAME} (${BUILD_NUMBER}) 빌드가 성공적으로 끝났습니다.(kcjeon0770) Details: (<${BUILD_URL} | here >)")
         }
         failure { 
             slackSend(tokenCredentialId: 'slack-token'
                 , channel: '#교육'
                 , color: 'danger'
-                , message: "${JOB_NAME} (${BUILD_NUMBER}) 빌드가 실패하였습니다. Details: (<${BUILD_URL} | here >)")
+                , message: "${JOB_NAME} (${BUILD_NUMBER}) 빌드가 실패하였습니다.(kcjeon0770) Details: (<${BUILD_URL} | here >)")
     }
   }
 }
